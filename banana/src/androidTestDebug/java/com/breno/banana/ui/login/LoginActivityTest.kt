@@ -1,12 +1,13 @@
 package com.breno.banana.ui.login
 
+
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
-//import android.graphics.Bitmap
+import android.os.Environment
 import android.view.inputmethod.InputMethodManager
+import androidx.test.InstrumentationRegistry.getTargetContext
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -15,13 +16,13 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
-import androidx.test.runner.screenshot.Screenshot
+import androidx.test.uiautomator.UiDevice
 import com.breno.banana.R
-import com.breno.brenodynamicfeatures.ScreenShot
 import org.hamcrest.CoreMatchers.not
 import org.junit.Rule
 import org.junit.Test
-import java.io.IOException
+import java.io.File
+
 
 //import java.io.IOException
 
@@ -53,12 +54,12 @@ class LoginActivityTest {
 
     @org.junit.Before
     fun setUp() {
+        captureScreenshot("Before")
     }
 
     @org.junit.After
     fun tearDown() {
-//        activityRule.finishActivity()
-
+        activityRule.finishActivity()
     }
 
     @Test
@@ -94,29 +95,35 @@ class LoginActivityTest {
 
         onView(withId(R.id.username)).perform(click())
         check(isKeyboardShown())
+        captureScreenshot("username_keyboard_open")
         onView(withId(R.id.username)).perform(typeText("este teste instrumental funciona perfeitamente em um modulo"), closeSoftKeyboard())
         onView(withId(R.id.username)).check(matches(withText("este teste instrumental funciona perfeitamente em um modulo")))
+        captureScreenshot("username_text_accurate")
 //        check(!isKeyboardShown())
         onView(withId(R.id.password)).perform(click())
+        captureScreenshot("password_keyboard_open")
 //        check(isKeyboardShown())
         onView(withId(R.id.password)).perform(typeText("senha12345"), closeSoftKeyboard())
 //        check(!isKeyboardShown())
         onView(withId(R.id.password)).check(matches(withText("senha12345")))
+        captureScreenshot("password_text_accurate")
         onView(withId(R.id.login)).perform(click())
         isToastShownWithText(welcome,activity)
-        ScreenShot.take(activity,"login")
-
-        captureScreenshot("final")
+        captureScreenshot("welcome_toast")
     }
 
-     fun captureScreenshot(name: String) {
-        val capture = Screenshot.capture()
-        capture.format = Bitmap.CompressFormat.PNG
-        capture.name = name
-        try {
-            capture.process()
-        } catch (ex: IOException) {
-            throw IllegalStateException(ex)
+    fun captureScreenshot(name:String){
+        val path = File(
+            Environment.getExternalStorageDirectory().getAbsolutePath()
+                .toString() + "/screenshots/" + getTargetContext().packageName
+        )
+        if (!path.exists()) {
+            path.mkdirs()
         }
+
+        val device =
+            UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        val filename = "$name.png"
+        device.takeScreenshot(File("sdcard/Download", filename))
     }
 }
