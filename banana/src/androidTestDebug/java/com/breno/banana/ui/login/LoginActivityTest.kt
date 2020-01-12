@@ -21,10 +21,7 @@ import com.breno.banana.R
 import org.hamcrest.CoreMatchers.not
 import org.junit.Rule
 import org.junit.Test
-import java.io.File
-
-
-//import java.io.IOException
+import java.io.*
 
 
 class LoginActivityTest {
@@ -41,6 +38,45 @@ class LoginActivityTest {
             .inRoot(withDecorView(not(decorView)))// Here we use decorView
             .check(matches(isDisplayed()))
     }
+
+//    val TAG = "SCREENSHOT_TAG"
+//
+//    fun take(activity: Activity, name: String) {
+//        val dir =
+//            Environment.getExternalStorageDirectory().absolutePath + "/test-screenshots/"
+//        val path = dir + name
+//        val filePath = File(dir) // Create directory if not present
+//        if (!filePath.isDirectory) {
+//            Log.i(TAG, "Creating directory $filePath")
+//            filePath.mkdirs()
+//        }
+//        Log.i(TAG, "Saving to path: $path")
+//        val phoneView: View = activity.window.decorView.rootView
+//        phoneView.setDrawingCacheEnabled(true)
+//        val bitmap: Bitmap = Bitmap.createBitmap(phoneView.getDrawingCache())
+//        phoneView.setDrawingCacheEnabled(false)
+//        var out: OutputStream? = null
+//        val imageFile = File(path)
+//        try {
+//            out = FileOutputStream(imageFile)
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+//            out.flush()
+//        } catch (e: FileNotFoundException) {
+//            Log.e(TAG, e.toString())
+//        } catch (e: IOException) {
+//            Log.e(TAG, e.toString())
+//        } finally {
+//            try {
+//                if (out != null) {
+//                    out.close()
+//                }
+//            } catch (e: IOException) {
+//                Log.e(TAG, e.toString())
+//            }
+//        }
+//    }
+
+
 
     @get:Rule
     val activityRule = ActivityTestRule(LoginActivity::class.java)
@@ -115,7 +151,7 @@ class LoginActivityTest {
     fun captureScreenshot(name:String){
         val path = File(
             Environment.getExternalStorageDirectory().getAbsolutePath()
-                .toString() + "/screenshots/" + getTargetContext().packageName
+                .toString() + "/test-screenshots/" + getTargetContext().packageName
         )
         if (!path.exists()) {
             path.mkdirs()
@@ -124,6 +160,6 @@ class LoginActivityTest {
         val device =
             UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         val filename = "$name.png"
-        device.takeScreenshot(File("sdcard/Download", filename))
+        device.takeScreenshot(File(path, filename))
     }
 }
