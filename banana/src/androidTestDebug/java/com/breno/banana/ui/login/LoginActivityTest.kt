@@ -5,6 +5,7 @@ import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
+//import android.graphics.Bitmap
 import android.view.inputmethod.InputMethodManager
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -16,10 +17,13 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.runner.screenshot.Screenshot
 import com.breno.banana.R
+import com.breno.brenodynamicfeatures.ScreenShot
 import org.hamcrest.CoreMatchers.not
 import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
+
+//import java.io.IOException
 
 
 class LoginActivityTest {
@@ -39,6 +43,13 @@ class LoginActivityTest {
 
     @get:Rule
     val activityRule = ActivityTestRule(LoginActivity::class.java)
+
+    @get:Rule
+    val mGrantPermissionRule: GrantPermissionRule? = GrantPermissionRule.grant(
+        READ_EXTERNAL_STORAGE,
+        WRITE_EXTERNAL_STORAGE
+    )
+
 
     @org.junit.Before
     fun setUp() {
@@ -93,10 +104,12 @@ class LoginActivityTest {
         onView(withId(R.id.password)).check(matches(withText("senha12345")))
         onView(withId(R.id.login)).perform(click())
         isToastShownWithText(welcome,activity)
-//        captureScreenshot("final")
+        ScreenShot.take(activity,"login")
+
+        captureScreenshot("final")
     }
 
-    private fun captureScreenshot(name: String) {
+     fun captureScreenshot(name: String) {
         val capture = Screenshot.capture()
         capture.format = Bitmap.CompressFormat.PNG
         capture.name = name
