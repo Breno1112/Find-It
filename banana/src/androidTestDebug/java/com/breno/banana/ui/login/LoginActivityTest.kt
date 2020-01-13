@@ -39,43 +39,6 @@ class LoginActivityTest {
             .check(matches(isDisplayed()))
     }
 
-//    val TAG = "SCREENSHOT_TAG"
-//
-//    fun take(activity: Activity, name: String) {
-//        val dir =
-//            Environment.getExternalStorageDirectory().absolutePath + "/test-screenshots/"
-//        val path = dir + name
-//        val filePath = File(dir) // Create directory if not present
-//        if (!filePath.isDirectory) {
-//            Log.i(TAG, "Creating directory $filePath")
-//            filePath.mkdirs()
-//        }
-//        Log.i(TAG, "Saving to path: $path")
-//        val phoneView: View = activity.window.decorView.rootView
-//        phoneView.setDrawingCacheEnabled(true)
-//        val bitmap: Bitmap = Bitmap.createBitmap(phoneView.getDrawingCache())
-//        phoneView.setDrawingCacheEnabled(false)
-//        var out: OutputStream? = null
-//        val imageFile = File(path)
-//        try {
-//            out = FileOutputStream(imageFile)
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
-//            out.flush()
-//        } catch (e: FileNotFoundException) {
-//            Log.e(TAG, e.toString())
-//        } catch (e: IOException) {
-//            Log.e(TAG, e.toString())
-//        } finally {
-//            try {
-//                if (out != null) {
-//                    out.close()
-//                }
-//            } catch (e: IOException) {
-//                Log.e(TAG, e.toString())
-//            }
-//        }
-//    }
-
 
 
     @get:Rule
